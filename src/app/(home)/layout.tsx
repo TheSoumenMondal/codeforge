@@ -1,5 +1,6 @@
 import type React from "react";
 import LeftSidebar from "@/components/features/common/LeftSidebar";
+import Navbar from "@/components/features/common/Navbar";
 
 const layout = ({
   children,
@@ -12,8 +13,10 @@ const layout = ({
         <LeftSidebar />
       </div>
       <div className="col-span-10 border-r">
-        <div className="h-14 border-b">navbar</div>
-        <div>{children}</div>
+        <div className="h-14 border-b">
+          <Navbar />
+        </div>
+        <div className="w-full">{children}</div>
       </div>
     </div>
   );
