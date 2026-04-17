@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import ExploreLeftNav from "../explore/ExploreLeftNav";
 import ExploreRightNav from "../explore/ExploreRightNav";
+import ProblemLeftNav from "../problems/ProblemLeftNav";
+import ProblemRightNav from "../problems/ProblemRightNav";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -14,7 +16,8 @@ const Navbar = () => {
     leftNav = <ExploreLeftNav />;
     rightNav = <ExploreRightNav />;
   } else if (pathname === "/problems") {
-    leftNav = <p>Problems Navbar</p>;
+    leftNav = <ProblemLeftNav />;
+    rightNav = <ProblemRightNav />;
   }
 
   return (
