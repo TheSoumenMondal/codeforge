@@ -2,7 +2,7 @@
 
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactElement, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./button";
 
@@ -44,6 +44,7 @@ function SelectTrigger(
     size?: "default" | "sm";
     variant?: NonNullable<Parameters<typeof buttonVariants>[0]>["variant"];
     children?: ReactNode;
+    icon?: ReactElement;
   },
 ) {
   const {
@@ -51,6 +52,9 @@ function SelectTrigger(
     size = "default",
     variant = "raised",
     children = null,
+    icon = (
+      <ChevronDownIcon className="text-muted-foreground size-3.5 pointer-events-none" />
+    ),
     ...rest
   } = props;
   return (
@@ -69,11 +73,7 @@ function SelectTrigger(
       {...rest}
     >
       {children}
-      <SelectPrimitive.Icon
-        render={
-          <ChevronDownIcon className="text-muted-foreground size-3.5 pointer-events-none" />
-        }
-      />
+      <SelectPrimitive.Icon render={icon} />
     </SelectPrimitive.Trigger>
   );
 }
