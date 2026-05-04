@@ -52,7 +52,6 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
         >
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
