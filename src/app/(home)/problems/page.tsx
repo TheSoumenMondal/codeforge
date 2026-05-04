@@ -2,7 +2,7 @@
 
 import { CircleNotchIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
-import { getAllProblems } from "@/api/problem.service";
+import { getAllProblems } from "@/api/services/problem.service";
 import ProblemCard from "@/components/features/problems/ProblemCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { TProblemDataType } from "@/types/problem";

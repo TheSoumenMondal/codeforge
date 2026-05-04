@@ -32,16 +32,21 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/hooks/useAuth";
 
 const page = () => {
+  const { user } = useAuth();
+
   return (
     <div className="w-full h-full max-h-[calc(100vh-57px)] flex flex-col">
       <div className=" flex gap-2 flex-col h-24 bg-[repeating-linear-gradient(45deg,var(--muted)_0px,var(--muted)_1px,transparent_1px,transparent_6px),repeating-linear-gradient(-45deg,var(--muted)_0px,var(--muted)_1px,transparent_1px,transparent_6px)] p-3! border-b relative">
         <Avatar>
-          <AvatarImage src={"/images/avatar/default_dp.png"} />
+          <AvatarImage
+            src={user?.avatar_url || "/images/avatar/default_dp.png"}
+          />
         </Avatar>
         <p className="font-instrumental-serif text-2xl">
-          Contributing as {"Soumen"}
+          Contributing as {user?.name}
         </p>
       </div>
       <ScrollArea className="w-full h-full max-h-[calc(100vh-153px)] p-4">

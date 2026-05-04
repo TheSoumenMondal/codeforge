@@ -6,15 +6,16 @@ import {
   CompassIcon,
   GearIcon,
   MagnifyingGlassIcon,
-  UserCircleIcon,
 } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { ToggleTheme } from "@/components/ui/toggle-theme";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useAuth } from "@/hooks/useAuth";
 
 type TSidebarItemType = {
   id: number;
@@ -82,6 +83,8 @@ const sidebarItems: TSidebarItemType[] = [
 ];
 
 const LeftSidebar = () => {
+  const { user, isAuthenticated } = useAuth();
+
   const router = useRouter();
   const handleSidebarItemClick = (link: string) => {
     router.push(link);
@@ -108,16 +111,23 @@ const LeftSidebar = () => {
         </div>
         <div className="mt-4">
           <div className="w-full flex items-center gap-2">
-            <div>
-              <UserCircleIcon
-                size={32}
-                weight="duotone"
-              />
-            </div>
-            <div>
-              <p className="font-geist-sans font-semibold">Soumen</p>
-              <p className="text-xs">Newbie</p>
-            </div>
+            {isAuthenticated && (
+              <>
+                <div>
+                  <Avatar>
+                    <AvatarImage
+                      src={user?.avatar_url || "/images/avatar/default_dp.png"}
+                    />
+                  </Avatar>
+                </div>
+                <div>
+                  <p className="font-geist-sans font-semibold">
+                    {user?.name?.split(" ")[0]}
+                  </p>
+                  <p className="text-xs">Newbie</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

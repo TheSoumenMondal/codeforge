@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif, Inter } from "next/font/google";
 import "./globals.css";
+import { AuthGate } from "@/components/AuthGate";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
@@ -48,17 +50,26 @@ export default function RootLayout({
       )}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
-        <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <TooltipProvider>{children}</TooltipProvider>
-          </ThemeProvider>
-        </ReactQueryProvider>
+      <body
+        className="min-h-full flex flex-col"
+        suppressHydrationWarning
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthGate>
+            <ReactQueryProvider>
+              <TooltipProvider>{children}</TooltipProvider>
+            </ReactQueryProvider>
+          </AuthGate>
+          <Toaster
+            richColors
+            position="bottom-right"
+          />
+        </ThemeProvider>
       </body>
     </html>
   );
