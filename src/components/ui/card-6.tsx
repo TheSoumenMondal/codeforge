@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { TCollectionCardType } from "../../../temp/collection-card";
+
+type TCollectionCardType = {
+  title: string;
+  bgImage: string;
+  description: string;
+};
 
 type TCard6Props = Pick<
   TCollectionCardType,
