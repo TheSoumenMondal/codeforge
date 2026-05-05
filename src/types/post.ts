@@ -10,3 +10,10 @@ export type TPost = {
   userName: string;
   userProfileImage: string;
 };
+
+export type TCreatePostRequest = {
+  title: string;
+  content: string;
+  images?: string[];
+  tags?: string[];
+};

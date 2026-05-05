@@ -32,7 +32,7 @@ const page = () => {
   return (
     <div className="w-full grid grid-cols-12 h-[calc(100vh-57px)]">
       <div className="col-span-8 border-r">
-        <div className=" w-full h-24">
+        <div className=" w-full h-24 ">
           <CreatePostCard />
         </div>
         <div className="w-full h-full max-h-[calc(100vh-153px)]">

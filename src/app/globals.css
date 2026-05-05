@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/suspicious/noUnknownAtRules: <explanation> */
+/** biome-ignore-all lint/suspicious/noUnknownAtRules: ignore */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
