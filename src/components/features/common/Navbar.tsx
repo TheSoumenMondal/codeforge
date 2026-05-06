@@ -1,6 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import ArticleLeftNavbar from "../article/ArticleLeftNavbar";
+import ArticleRightNavbar from "../article/ArticleRightNavbar";
 import ExploreLeftNav from "../explore/ExploreLeftNav";
 import ExploreRightNav from "../explore/ExploreRightNav";
 import ProblemLeftNav from "../problems/ProblemLeftNav";
@@ -18,6 +20,9 @@ const Navbar = () => {
   } else if (pathname === "/problems") {
     leftNav = <ProblemLeftNav />;
     rightNav = <ProblemRightNav />;
+  } else if (pathname === "/articles") {
+    leftNav = <ArticleLeftNavbar />;
+    rightNav = <ArticleRightNavbar />;
   }
 
   return (
