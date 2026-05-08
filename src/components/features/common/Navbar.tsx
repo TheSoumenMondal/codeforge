@@ -5,6 +5,8 @@ import ArticleLeftNavbar from "../article/ArticleLeftNavbar";
 import ArticleRightNavbar from "../article/ArticleRightNavbar";
 import ExploreLeftNav from "../explore/ExploreLeftNav";
 import ExploreRightNav from "../explore/ExploreRightNav";
+import CreateProblemNavbarLeft from "../problems/create/CreateProblemNavbarLeft";
+import CreateProblemNavbarRight from "../problems/create/CreateProblemNavbarRight";
 import ProblemLeftNav from "../problems/ProblemLeftNav";
 import ProblemRightNav from "../problems/ProblemRightNav";
 
@@ -23,6 +25,9 @@ const Navbar = () => {
   } else if (pathname === "/articles") {
     leftNav = <ArticleLeftNavbar />;
     rightNav = <ArticleRightNavbar />;
+  } else if (pathname === "/problems/create") {
+    leftNav = <CreateProblemNavbarLeft />;
+    rightNav = <CreateProblemNavbarRight />;
   }
 
   return (
