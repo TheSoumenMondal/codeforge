@@ -175,7 +175,7 @@ const CreatePageRight = () => {
                 Opening this problem replaces the editor with the saved version.
                 Any unsaved work on the left will be lost.
               </span>
-              <p className="font-ubuntu-mono font-bold">Problem: </p>
+              <span className="font-ubuntu-mono font-bold">Problem: </span>
               <span className="font-semibold text-foreground text-sm">
                 {modifyTarget?.title ?? ""}
               </span>
