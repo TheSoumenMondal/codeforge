@@ -80,6 +80,7 @@ export default function RootLayout({
           </AuthGate>
           <Toaster
             richColors
+            closeButton
             position="bottom-right"
           />
         </ThemeProvider>

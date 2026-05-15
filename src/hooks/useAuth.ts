@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { handleLogin, registerUser } from "@/api/services/auth.service";
 import { useAuthStore } from "@/store/auth-store";
+import { clearProblemStore } from "@/store/problem-store";
 
 export function useAuth() {
   const store = useAuthStore();
@@ -29,6 +30,7 @@ export function useAuth() {
     store.setToken(null);
     store.setIsAuthenticated(false);
     store.setUser(null);
+    clearProblemStore();
     router.push("/login");
   }, [store, router]);
 

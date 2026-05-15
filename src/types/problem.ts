@@ -71,3 +71,59 @@ export type TProblemResponse = {
   data: TProblemTotalData;
   error: string | null;
 };
+
+export type TCreateProblemRequestPayload = {
+  title: string;
+  description: string;
+  difficulty: "easy" | "medium" | "hard";
+};
+
+export type TProblemCreationResponseData = {
+  id: string;
+  title: string;
+  description: string;
+  difficulty: "easy" | "medium" | "hard";
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+  creator: TCreator;
+};
+
+export type TUpdateProblemRequestPayload = {
+  title?: string;
+  description?: string;
+  difficulty?: "easy" | "medium" | "hard";
+};
+
+/** Matches backend `CreateCodeStubDto.language` enum. */
+export type TCreateCodeStubApiLanguage =
+  | "python"
+  | "javascript"
+  | "java"
+  | "cpp";
+
+export type TCreateCodeStubRequestPayload = {
+  problemId: string;
+  language: TCreateCodeStubApiLanguage;
+  startCode: string;
+  userCode: string;
+  endCode: string;
+};
+
+/** Body matches backend `UpdateCodeStubDto`; `language` is sent as query (?language=cpp). */
+export type TCodeStubUpdationRequestPayload = {
+  problemId: string;
+  language: TCreateCodeStubApiLanguage;
+  startCode?: string;
+  userCode?: string;
+  endCode?: string;
+};
+
+/** Matches backend `UpdateTestCaseDto`. */
+export type TTestCaseUpdationRequestPayload = {
+  problemId: string;
+  testCaseId: string;
+  input?: string;
+  output?: string;
+  totalExecutionTime?: number;
+};

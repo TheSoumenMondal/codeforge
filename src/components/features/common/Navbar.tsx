@@ -1,12 +1,36 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
+import { usePathname, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import ArticleLeftNavbar from "../article/ArticleLeftNavbar";
 import ArticleRightNavbar from "../article/ArticleRightNavbar";
 import ExploreLeftNav from "../explore/ExploreLeftNav";
 import ExploreRightNav from "../explore/ExploreRightNav";
+import CreateProblemNavbarLeft from "../problems/create/CreateProblemNavbarLeft";
+import CreateProblemNavbarRight from "../problems/create/CreateProblemNavbarRight";
 import ProblemLeftNav from "../problems/ProblemLeftNav";
 import ProblemRightNav from "../problems/ProblemRightNav";
+
+const ArticleReaderNav = () => {
+  const router = useRouter();
+  return (
+    <div className="w-full flex items-center h-full px-4 gap-3">
+      <Button
+        animation="none"
+        size="sm"
+        variant="ghost"
+        onClick={() => router.back()}
+      >
+        <ArrowLeftIcon
+          size={18}
+          weight="duotone"
+        />
+        Articles
+      </Button>
+    </div>
+  );
+};
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -23,6 +47,12 @@ const Navbar = () => {
   } else if (pathname === "/articles") {
     leftNav = <ArticleLeftNavbar />;
     rightNav = <ArticleRightNavbar />;
+  } else if (pathname.startsWith("/articles/")) {
+    leftNav = <ArticleReaderNav />;
+    rightNav = null;
+  } else if (pathname === "/problems/create") {
+    leftNav = <CreateProblemNavbarLeft />;
+    rightNav = <CreateProblemNavbarRight />;
   }
 
   return (
