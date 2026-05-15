@@ -1,5 +1,12 @@
 /** biome-ignore-all lint/style/useNamingConvention: <> */
 
+export type TCreateArticlePayload = {
+  title: string;
+  content: string;
+  excerpt?: string;
+  cover_image?: string;
+};
+
 export type TArticle = {
   id: string;
   title: string;
