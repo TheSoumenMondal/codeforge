@@ -92,7 +92,7 @@ function Button({
     | "icon-sm"
     | "icon-lg";
   animation?: "all" | "colors" | "none" | "only-scale";
-  children: React.ReactNode;
+  children?: React.ReactNode;
   [key: string]: unknown;
 }) {
   return (

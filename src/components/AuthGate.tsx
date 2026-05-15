@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { getProfile } from "@/api/services/auth.service";
 import { useAuth } from "@/hooks/useAuth";
+import { clearProblemStore } from "@/store/problem-store";
 
 export function AuthGate({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, token, setIsAuthenticated, setToken, setUser } =
@@ -41,6 +42,7 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
             setIsAuthenticated(false);
             setToken(null);
             setUser(null);
+            clearProblemStore();
           }
         }
       } else {

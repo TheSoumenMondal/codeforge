@@ -8,6 +8,8 @@ import CodeMirror from "@uiw/react-codemirror";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
+import { littleCodemirrorLayoutExtensions } from "./littleCodemirrorLayout";
+
 const lightTheme = EditorView.theme({
   "&": {
     backgroundColor: "#ffffff",
@@ -30,13 +32,14 @@ const lightTheme = EditorView.theme({
 });
 
 const JavaScriptLittleCodeEditor = ({
-  placeholderCode,
+  value,
+  onChange,
 }: {
-  placeholderCode: string;
+  value: string;
+  onChange: (value: string) => void;
 }) => {
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [code, setCode] = useState(placeholderCode);
 
   useEffect(() => {
     setMounted(true);
@@ -48,14 +51,15 @@ const JavaScriptLittleCodeEditor = ({
 
   return (
     <div
-      className={`w-full h-full overflow-hidden border ${theme === "dark" ? "border-secondary" : "border-secondary"}`}
+      className={`w-full min-w-0 max-w-full overflow-hidden border ${theme === "dark" ? "border-secondary" : "border-secondary"}`}
     >
       <CodeMirror
-        value={code}
+        value={value}
         height="200px"
-        extensions={[javascriptLanguage]}
+        extensions={[javascriptLanguage, ...littleCodemirrorLayoutExtensions]}
+        style={{ maxWidth: "100%" }}
         theme={isDark ? materialDark : lightTheme}
-        onChange={(value) => setCode(value)}
+        onChange={(val) => onChange(val)}
         basicSetup={{
           autocompletion: true,
           lineNumbers: false,

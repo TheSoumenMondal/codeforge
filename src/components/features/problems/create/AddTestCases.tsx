@@ -1,39 +1,53 @@
 "use client";
 
-import { PlusCircleIcon } from "@phosphor-icons/react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import TestCase from "./TestCase";
 
-const AddTestCases = () => {
-  const [testCases, setTestCases] = useState<string[]>([]);
+interface ITestCaseData {
+  id: string;
+  input: string;
+  output: string;
+}
 
-  function addTestCase() {
-    setTestCases([...testCases, crypto.randomUUID()]);
+interface IAddTestCasesProps {
+  testCases: ITestCaseData[];
+  onChange: (testCases: ITestCaseData[]) => void;
+  onSave?: (testCase: ITestCaseData) => void;
+  savingId?: string;
+}
+
+const AddTestCases = ({
+  testCases,
+  onChange,
+  onSave,
+  savingId,
+}: IAddTestCasesProps) => {
+  function updateTestCase(id: string, data: { input: string; output: string }) {
+    onChange(testCases.map((tc) => (tc.id === id ? { ...tc, ...data } : tc)));
+  }
+
+  function deleteTestCase(id: string) {
+    onChange(testCases.filter((tc) => tc.id !== id));
   }
 
   return (
     <div className="w-full mt-4 flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <p className="text-xl font-semibold font-instrumental-serif">
-          Add Test Cases
-        </p>
-        <Button
-          variant="info"
-          size="lg"
-          onClick={addTestCase}
-        >
-          Add Test Case
-          <PlusCircleIcon
-            size={32}
-            weight="duotone"
-          />{" "}
-        </Button>
-      </div>
+      <p className="text-xl font-semibold font-instrumental-serif">
+        Add Test Cases
+      </p>
       <div>
         <div>
-          {testCases.map((id) => {
-            return <TestCase key={id} />;
+          {testCases.map((tc) => {
+            return (
+              <TestCase
+                key={tc.id}
+                input={tc.input}
+                output={tc.output}
+                onChange={(data) => updateTestCase(tc.id, data)}
+                onDelete={() => deleteTestCase(tc.id)}
+                onSave={() => onSave?.(tc)}
+                isSaving={savingId === tc.id}
+              />
+            );
           })}
         </div>
       </div>
