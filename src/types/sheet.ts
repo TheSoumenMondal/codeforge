@@ -1,4 +1,15 @@
 /** biome-ignore-all lint/style/useNamingConvention: <> */
+
+export type TSheetProblem = {
+  id: string;
+  title: string;
+  description: string;
+  difficulty: "easy" | "medium" | "hard";
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type TSheet = {
   id: string;
   title: string;
