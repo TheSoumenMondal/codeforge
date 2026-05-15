@@ -41,7 +41,7 @@ const PageRight = () => {
         <CreateCollection />
       </div>
       <ScrollArea className="w-full h-full max-h-[calc(100vh-117px)] p-4">
-        <div className="h-full w-full flex flex-col gap-3">
+        <div className="h-full w-full flex flex-col gap-3 px-1 pt-2">
           {data?.map((sheet, index) => {
             return (
               <SheetCard
