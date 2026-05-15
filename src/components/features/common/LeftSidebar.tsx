@@ -5,7 +5,6 @@ import {
   BrainIcon,
   CompassIcon,
   GearIcon,
-  MagnifyingGlassIcon,
 } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -60,17 +59,6 @@ const sidebarItems: TSidebarItemType[] = [
   },
   {
     id: 4,
-    title: "Search",
-    icon: (
-      <MagnifyingGlassIcon
-        className="w-full h-full"
-        weight="duotone"
-      />
-    ),
-    link: "/search",
-  },
-  {
-    id: 5,
     title: "My Profile",
     icon: (
       <GearIcon

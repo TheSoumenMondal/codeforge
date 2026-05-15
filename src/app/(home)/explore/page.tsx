@@ -4,6 +4,7 @@ import { CircleNotchIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllPosts } from "@/api/services/post.service";
 import CreatePostCard from "@/components/features/explore/CreatePostCard";
+import ExploreRight from "@/components/features/explore/ExploreRight";
 import PostCard from "@/components/features/explore/PostCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -57,7 +58,9 @@ const page = () => {
           </ScrollArea>
         </div>
       </div>
-      <div className="col-span-4">bye</div>
+      <div className="col-span-4">
+        <ExploreRight />
+      </div>
     </div>
   );
 };
