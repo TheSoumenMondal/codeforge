@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import type { TArticle } from "@/types/article";
 
 const formatDate = (iso: string) => {
@@ -19,11 +20,16 @@ const estimateReadTime = (content: string) => {
 };
 
 const ArticleCard = ({ data }: { data: TArticle }) => {
+  const router = useRouter();
   const readTime = estimateReadTime(data.content);
   const authorName = data.author?.name ?? "Unknown Author";
 
   return (
-    <article className="group flex gap-4 border-b border-border py-6 cursor-pointer">
+    <button
+      type="button"
+      className="group flex gap-4 border-b border-border py-6 cursor-pointer w-full text-left"
+      onClick={() => router.push(`/articles/${data.slug}`)}
+    >
       <div className="flex flex-1 flex-col justify-between min-w-0">
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
           {data.author?.avatar_url ? (
@@ -75,7 +81,7 @@ const ArticleCard = ({ data }: { data: TArticle }) => {
           />
         </div>
       )}
-    </article>
+    </button>
   );
 };
 

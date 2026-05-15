@@ -20,6 +20,21 @@ export async function getAllArticles(): Promise<TArticle[]> {
   }
 }
 
+export async function getArticleBySlug(slug: string): Promise<TArticle> {
+  try {
+    const response = await apiClient.get(`/article/slug/${slug}`);
+    if (!response.data.success) {
+      throw new Error(response.data.message);
+    }
+    return response.data.data;
+  } catch (error) {
+    throw new Error(
+      "Failed to fetch article",
+      error instanceof Error ? { cause: error } : undefined,
+    );
+  }
+}
+
 export async function createArticle(
   token: string,
   payload: TCreateArticlePayload,

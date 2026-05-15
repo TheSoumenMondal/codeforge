@@ -10,8 +10,6 @@ import {
 } from "@phosphor-icons/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { createArticle } from "@/api/services/article.service";
 import { uploadPostFiles } from "@/api/services/post.service";
@@ -31,6 +29,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import type { TCreateArticlePayload } from "@/types/article";
+import MarkdownRenderer from "./MarkdownRenderer";
 
 const EMPTY: TCreateArticlePayload = {
   title: "",
@@ -38,88 +37,6 @@ const EMPTY: TCreateArticlePayload = {
   excerpt: "",
   // biome-ignore lint/style/useNamingConvention: matching API field
   cover_image: "",
-};
-
-const MD_COMPONENTS = {
-  h1: ({ children }: { children?: React.ReactNode }) => (
-    <h1 className="text-2xl font-bold mt-6 mb-3 leading-tight">{children}</h1>
-  ),
-  h2: ({ children }: { children?: React.ReactNode }) => (
-    <h2 className="text-xl font-bold mt-5 mb-2 leading-tight">{children}</h2>
-  ),
-  h3: ({ children }: { children?: React.ReactNode }) => (
-    <h3 className="text-lg font-semibold mt-4 mb-2">{children}</h3>
-  ),
-  h4: ({ children }: { children?: React.ReactNode }) => (
-    <h4 className="text-base font-semibold mt-3 mb-1">{children}</h4>
-  ),
-  // biome-ignore lint/style/useNamingConvention: single-char HTML tag key required by react-markdown
-  p: ({ children }: { children?: React.ReactNode }) => (
-    <p className="text-sm leading-7 mb-3">{children}</p>
-  ),
-  ul: ({ children }: { children?: React.ReactNode }) => (
-    <ul className="list-disc list-outside pl-5 mb-3 space-y-1 text-sm">
-      {children}
-    </ul>
-  ),
-  ol: ({ children }: { children?: React.ReactNode }) => (
-    <ol className="list-decimal list-outside pl-5 mb-3 space-y-1 text-sm">
-      {children}
-    </ol>
-  ),
-  li: ({ children }: { children?: React.ReactNode }) => (
-    <li className="leading-6">{children}</li>
-  ),
-  blockquote: ({ children }: { children?: React.ReactNode }) => (
-    <blockquote className="border-l-4 border-border pl-4 italic text-muted-foreground my-3 text-sm">
-      {children}
-    </blockquote>
-  ),
-  code: ({
-    inline,
-    children,
-  }: {
-    inline?: boolean;
-    children?: React.ReactNode;
-  }) =>
-    inline ? (
-      <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">
-        {children}
-      </code>
-    ) : (
-      <code className="block bg-muted rounded-md p-3 text-xs font-mono overflow-x-auto">
-        {children}
-      </code>
-    ),
-  pre: ({ children }: { children?: React.ReactNode }) => (
-    <pre className="mb-3 rounded-md overflow-hidden">{children}</pre>
-  ),
-  // biome-ignore lint/style/useNamingConvention: single-char HTML tag key required by react-markdown
-  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
-    <a
-      href={href}
-      className="text-primary underline underline-offset-2 hover:opacity-80"
-      target="_blank"
-      rel="noreferrer"
-    >
-      {children}
-    </a>
-  ),
-  strong: ({ children }: { children?: React.ReactNode }) => (
-    <strong className="font-semibold">{children}</strong>
-  ),
-  em: ({ children }: { children?: React.ReactNode }) => (
-    <em className="italic">{children}</em>
-  ),
-  hr: () => <hr className="my-4 border-border" />,
-  img: ({ src, alt }: { src?: string | Blob; alt?: string }) => (
-    // biome-ignore lint/performance/noImgElement: markdown image, URL is author-provided
-    <img
-      src={typeof src === "string" ? src : undefined}
-      alt={alt ?? ""}
-      className="rounded-md max-w-full my-3"
-    />
-  ),
 };
 
 const CreateArticleDialog = () => {
@@ -362,12 +279,7 @@ const CreateArticleDialog = () => {
             ) : (
               <ScrollArea className="min-h-56 max-h-72 rounded-md border bg-muted/20 px-4 py-3">
                 {form.content.trim() ? (
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={MD_COMPONENTS}
-                  >
-                    {form.content}
-                  </ReactMarkdown>
+                  <MarkdownRenderer content={form.content} />
                 ) : (
                   <p className="text-sm text-muted-foreground italic">
                     Nothing to preview yet.
