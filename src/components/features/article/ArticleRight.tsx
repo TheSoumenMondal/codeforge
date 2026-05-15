@@ -30,17 +30,23 @@ const ArticleRight = () => {
 
   if (isLoading) {
     return (
-      <CircleNotchIcon
-        className="animate-spin"
-        size={32}
-        weight="duotone"
-      />
+      <div className="w-full h-[calc(100vh-57px)] flex items-center justify-center">
+        <CircleNotchIcon
+          className="animate-spin"
+          size={32}
+          weight="duotone"
+        />
+      </div>
     );
   }
 
   if (error) {
     return (
-      <p>{error instanceof Error ? error.message : "An error occurred"}</p>
+      <div className="w-full h-[calc(100vh-57px)] flex items-center justify-center">
+        <p className="text-sm text-muted-foreground">
+          {error instanceof Error ? error.message : "An error occurred"}
+        </p>
+      </div>
     );
   }
 
