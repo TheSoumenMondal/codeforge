@@ -11,9 +11,19 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "example.com",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.imagekit.io",
       },
     ],
+    // biome-ignore lint/style/useNamingConvention: Next.js option name
+    dangerouslyAllowSVG: true,
   },
 };
 

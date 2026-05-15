@@ -1,16 +1,20 @@
 "use client";
 
 import {
+  ArrowUpIcon,
   CircleNotchIcon,
   EyeIcon,
+  ImageIcon,
   PencilSimpleIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { createArticle } from "@/api/services/article.service";
+import { uploadPostFiles } from "@/api/services/post.service";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -36,6 +40,88 @@ const EMPTY: TCreateArticlePayload = {
   cover_image: "",
 };
 
+const MD_COMPONENTS = {
+  h1: ({ children }: { children?: React.ReactNode }) => (
+    <h1 className="text-2xl font-bold mt-6 mb-3 leading-tight">{children}</h1>
+  ),
+  h2: ({ children }: { children?: React.ReactNode }) => (
+    <h2 className="text-xl font-bold mt-5 mb-2 leading-tight">{children}</h2>
+  ),
+  h3: ({ children }: { children?: React.ReactNode }) => (
+    <h3 className="text-lg font-semibold mt-4 mb-2">{children}</h3>
+  ),
+  h4: ({ children }: { children?: React.ReactNode }) => (
+    <h4 className="text-base font-semibold mt-3 mb-1">{children}</h4>
+  ),
+  // biome-ignore lint/style/useNamingConvention: single-char HTML tag key required by react-markdown
+  p: ({ children }: { children?: React.ReactNode }) => (
+    <p className="text-sm leading-7 mb-3">{children}</p>
+  ),
+  ul: ({ children }: { children?: React.ReactNode }) => (
+    <ul className="list-disc list-outside pl-5 mb-3 space-y-1 text-sm">
+      {children}
+    </ul>
+  ),
+  ol: ({ children }: { children?: React.ReactNode }) => (
+    <ol className="list-decimal list-outside pl-5 mb-3 space-y-1 text-sm">
+      {children}
+    </ol>
+  ),
+  li: ({ children }: { children?: React.ReactNode }) => (
+    <li className="leading-6">{children}</li>
+  ),
+  blockquote: ({ children }: { children?: React.ReactNode }) => (
+    <blockquote className="border-l-4 border-border pl-4 italic text-muted-foreground my-3 text-sm">
+      {children}
+    </blockquote>
+  ),
+  code: ({
+    inline,
+    children,
+  }: {
+    inline?: boolean;
+    children?: React.ReactNode;
+  }) =>
+    inline ? (
+      <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">
+        {children}
+      </code>
+    ) : (
+      <code className="block bg-muted rounded-md p-3 text-xs font-mono overflow-x-auto">
+        {children}
+      </code>
+    ),
+  pre: ({ children }: { children?: React.ReactNode }) => (
+    <pre className="mb-3 rounded-md overflow-hidden">{children}</pre>
+  ),
+  // biome-ignore lint/style/useNamingConvention: single-char HTML tag key required by react-markdown
+  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
+    <a
+      href={href}
+      className="text-primary underline underline-offset-2 hover:opacity-80"
+      target="_blank"
+      rel="noreferrer"
+    >
+      {children}
+    </a>
+  ),
+  strong: ({ children }: { children?: React.ReactNode }) => (
+    <strong className="font-semibold">{children}</strong>
+  ),
+  em: ({ children }: { children?: React.ReactNode }) => (
+    <em className="italic">{children}</em>
+  ),
+  hr: () => <hr className="my-4 border-border" />,
+  img: ({ src, alt }: { src?: string | Blob; alt?: string }) => (
+    // biome-ignore lint/performance/noImgElement: markdown image, URL is author-provided
+    <img
+      src={typeof src === "string" ? src : undefined}
+      alt={alt ?? ""}
+      className="rounded-md max-w-full my-3"
+    />
+  ),
+};
+
 const CreateArticleDialog = () => {
   const { token } = useAuth();
   const queryClient = useQueryClient();
@@ -43,6 +129,27 @@ const CreateArticleDialog = () => {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<TCreateArticlePayload>(EMPTY);
   const [tab, setTab] = useState<"write" | "preview">("write");
+  const [uploading, setUploading] = useState(false);
+  const coverInputRef = useRef<HTMLInputElement>(null);
+
+  const handleCoverUpload = async (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const file = ev.target.files?.[0];
+    if (!file || !token) return;
+    setUploading(true);
+    try {
+      const urls = await uploadPostFiles(token, [file]);
+      if (urls[0]) {
+        // biome-ignore lint/style/useNamingConvention: matching API field
+        setForm((prev) => ({ ...prev, cover_image: urls[0] }));
+        toast.success("Cover image uploaded");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+      if (coverInputRef.current) coverInputRef.current.value = "";
+    }
+  };
 
   const mutation = useMutation({
     mutationFn: (payload: TCreateArticlePayload) => {
@@ -57,7 +164,7 @@ const CreateArticleDialog = () => {
       setTab("write");
       setOpen(false);
     },
-    onError: (err) =>
+    onError: (err: Error) =>
       toast.error(
         err instanceof Error ? err.message : "Failed to create article",
       ),
@@ -143,13 +250,58 @@ const CreateArticleDialog = () => {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="article-cover">Cover Image URL</Label>
-              <Input
-                id="article-cover"
-                placeholder="https://example.com/cover.jpg"
-                value={form.cover_image}
-                onChange={set("cover_image")}
-                disabled={mutation.isPending}
+              <Label>Cover Image</Label>
+              {form.cover_image ? (
+                <div className="relative w-full h-28 rounded-lg overflow-hidden border group">
+                  {/* biome-ignore lint/performance/noImgElement: user-uploaded URL */}
+                  <img
+                    src={form.cover_image}
+                    alt="cover preview"
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      // biome-ignore lint/style/useNamingConvention: matching API field
+                      setForm((prev) => ({ ...prev, cover_image: "" }))
+                    }
+                    className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-black/80 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <XIcon size={12} />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  disabled={uploading || mutation.isPending}
+                  onClick={() => coverInputRef.current?.click()}
+                  className="flex flex-col items-center justify-center gap-2 w-full h-28 rounded-lg border border-dashed border-border hover:border-primary hover:bg-muted/40 transition-colors text-muted-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {uploading ? (
+                    <CircleNotchIcon
+                      size={22}
+                      className="animate-spin"
+                    />
+                  ) : (
+                    <>
+                      <ImageIcon
+                        size={22}
+                        weight="duotone"
+                      />
+                      <span className="text-xs flex items-center gap-1">
+                        <ArrowUpIcon size={11} />
+                        Click to upload cover image
+                      </span>
+                    </>
+                  )}
+                </button>
+              )}
+              <input
+                ref={coverInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleCoverUpload}
               />
             </div>
           </div>
@@ -210,11 +362,12 @@ const CreateArticleDialog = () => {
             ) : (
               <ScrollArea className="min-h-56 max-h-72 rounded-md border bg-muted/20 px-4 py-3">
                 {form.content.trim() ? (
-                  <div className="prose prose-sm dark:prose-invert max-w-none">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {form.content}
-                    </ReactMarkdown>
-                  </div>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={MD_COMPONENTS}
+                  >
+                    {form.content}
+                  </ReactMarkdown>
                 ) : (
                   <p className="text-sm text-muted-foreground italic">
                     Nothing to preview yet.

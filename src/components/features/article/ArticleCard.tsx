@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import type { TArticle } from "@/types/article";
 
 const formatDate = (iso: string) => {
@@ -28,7 +27,8 @@ const ArticleCard = ({ data }: { data: TArticle }) => {
       <div className="flex flex-1 flex-col justify-between min-w-0">
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
           {data.author?.avatar_url ? (
-            <Image
+            // biome-ignore lint/performance/noImgElement: user avatar, hostname varies
+            <img
               src={data.author.avatar_url}
               alt={authorName}
               width={24}
@@ -67,11 +67,11 @@ const ArticleCard = ({ data }: { data: TArticle }) => {
 
       {data.cover_image && (
         <div className="relative hidden sm:block w-28 h-28 md:w-36 md:h-36 shrink-0 overflow-hidden rounded-md">
-          <Image
+          {/* biome-ignore lint/performance/noImgElement: cover URL is user-provided, hostname is unknown */}
+          <img
             src={data.cover_image}
             alt={data.title}
-            fill
-            className="object-cover"
+            className="w-full h-full object-cover"
           />
         </div>
       )}
