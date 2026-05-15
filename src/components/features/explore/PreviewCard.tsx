@@ -17,7 +17,7 @@ const PreviewGrid = ({
           className="relative shrink-0 w-20 h-20 rounded-xl overflow-hidden group/tile"
         >
           <div
-            style={{ backgroundImage: "url(" + src + ")" }}
+            style={{ backgroundImage: `url(${src})` }}
             className="absolute inset-0 bg-center bg-cover"
           />
           <button

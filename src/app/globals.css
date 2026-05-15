@@ -188,11 +188,14 @@
 .cm-editor *:focus-within,
 .cm-editor.cm-focused,
 .cm-editor.cm-focused * {
+  /* biome-ignore lint/complexity/noImportantStyles: overrides CodeMirror inline styles */
   outline: none !important;
+  /* biome-ignore lint/complexity/noImportantStyles: overrides CodeMirror inline styles */
   box-shadow: none !important;
 }
 
 /* Remove the right border from the gutter (line numbers) */
 .cm-editor .cm-gutters {
+  /* biome-ignore lint/complexity/noImportantStyles: overrides CodeMirror inline styles */
   border-right: none !important;
 }
