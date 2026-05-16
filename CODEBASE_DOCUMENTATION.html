@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeForge - Complete Codebase Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #475569;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, #1a1f3a 100%);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 2rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 4rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .badge {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge.secondary {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+            color: var(--primary);
+        }
+
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            background: var(--surface-light);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li {
+            color: var(--text-muted);
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .card li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .code-block code {
+            color: var(--primary);
+            line-height: 1.8;
+        }
+
+        /* Feature showcase */
+        .feature {
+            background: var(--surface);
+            border-left: 4px solid var(--primary);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .feature:hover {
+            background: var(--surface-light);
+        }
+
+        .feature h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tree structure */
+        .tree {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .tree-item {
+            color: var(--text-muted);
+            margin: 0.3rem 0;
+        }
+
+        .tree-folder {
+            color: var(--primary);
+        }
+
+        .tree-file {
+            color: var(--secondary);
+        }
+
+        .tree-comment {
+            color: var(--text-muted);
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        /* Tech stack */
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-item {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .tech-item .version {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 2px solid var(--border);
+            margin: 2rem 0 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Architecture diagram */
+        .diagram {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .diagram-box {
+            background: var(--surface);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .diagram-arrow {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 4rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 1rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Copy button */
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            float: right;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table th {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .table tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">⚙️ CodeForge</div>
+        <ul class="nav-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#tech">Tech Stack</a></li>
+            <li><a href="#structure">Structure</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#api">API</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>CodeForge Platform</h1>
+            <p>A comprehensive competitive programming and learning platform built with Next.js</p>
+            <div class="badge-group">
+                <span class="badge">Next.js 16.2.4</span>
+                <span class="badge secondary">React 19.2.4</span>
+                <span class="badge">TypeScript 5</span>
+                <span class="badge secondary">Zustand + React Query</span>
+                <span class="badge">Tailwind CSS 4</span>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <section class="section" id="overview">
+            <h2 class="section-title">📋 Project Overview</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>🎯 Purpose</h3>
+                    <p>CodeForge is a full-stack competitive programming platform enabling users to:</p>
+                    <ul>
+                        <li>Create and solve coding problems</li>
+                        <li>Write technical articles</li>
+                        <li>Share problem-solving strategies</li>
+                        <li>Organize problems into curated sheets</li>
+                        <li>Execute code with test cases</li>
+                        <li>View detailed problem analytics</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Current Status</h3>
+                    <p><strong>Version:</strong> 0.1.0 (Active Development)</p>
+                    <p style="margin-top: 1rem;"><strong>Deployment Ready:</strong> ✓ Vercel/Node.js</p>
+                    <p><strong>Architecture:</strong> Monorepo with pnpm</p>
+                    <p><strong>Code Quality:</strong> Biome + TypeScript strict mode</p>
+                    <p style="margin-top: 1rem;"><strong>Development:</strong> Husky pre-commit hooks</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Stack Section -->
+        <section class="section" id="tech">
+            <h2 class="section-title">🛠️ Technology Stack</h2>
+
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Frontend & Framework</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>Next.js</strong>
+                    <div class="version">16.2.4 (App Router)</div>
+                </div>
+                <div class="tech-item">
+                    <strong>React</strong>
+                    <div class="version">19.2.4</div>
+                </div>
+                <div class="tech-item">
+                    <strong>TypeScript</strong>
+                    <div class="version">5.x (Strict Mode)</div>
+                </div>
+                <div class="tech-item">
+                    <strong>Tailwind CSS</strong>
+                    <div class="version">4.x</div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">State Management & Data</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>Zustand</strong>
+                    <div class="version">5.0.12</div>
+                </div>
+                <div class="tech-item">
+                    <strong>React Query</strong>
+                    <div class="version">5.100.9</div>
+                </div>
+                <div class="tech-item">
+                    <strong>Axios</strong>
+                    <div class="version">1.15.2</div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">UI & Components</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>shadcn/ui</strong>
+                    <div class="version">30+ components</div>
+                </div>
+                <div class="tech-item">
+                    <strong>Radix UI</strong>
+                    <div class="version">1.4.3</div>
+                </div>
+                <div class="tech-item">
+                    <strong>Framer Motion</strong>
+                    <div class="version">12.38.0</div>
+                </div>
+                <div class="tech-item">
+                    <strong>Lucide Icons</strong>
+                    <div class="version">1.4.0</div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Code Editor & Utilities</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>CodeMirror</strong>
+                    <div class="version">6.x (4 languages)</div>
+                </div>
+                <div class="tech-item">
+                    <strong>React Markdown</strong>
+                    <div class="version">10.1.0</div>
+                </div>
+                <div class="tech-item">
+                    <strong>Recharts</strong>
+                    <div class="version">3.8.0</div>
+                </div>
+                <div class="tech-item">
+                    <strong>Sonner Toasts</strong>
+                    <div class="version">2.0.7</div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Developer Tools</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>Biome</strong>
+                    <div class="version">2.2.0 (Lint & Format)</div>
+                </div>
+                <div class="tech-item">
+                    <strong>Husky</strong>
+                    <div class="version">9.1.7</div>
+                </div>
+                <div class="tech-item">
+                    <strong>React Compiler</strong>
+                    <div class="version">Babel Plugin</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Structure -->
+        <section class="section" id="structure">
+            <h2 class="section-title">📁 Project Structure</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Monorepo using pnpm with feature-based organization</p>
+
+            <div class="tree">
+                <div class="tree-item"><span class="tree-folder">📦 src/</span></div>
+                <div class="tree-item" style="margin-left: 1.5rem;"><span class="tree-folder">api/</span> <span class="tree-comment">← API layer & services</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-file">client.ts</span> <span class="tree-comment">Axios + React Query setup</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-folder">services/</span></div>
+                <div class="tree-item" style="margin-left: 4.5rem;"><span class="tree-file">auth.service.ts</span></div>
+                <div class="tree-item" style="margin-left: 4.5rem;"><span class="tree-file">problem.service.ts</span></div>
+                <div class="tree-item" style="margin-left: 4.5rem;"><span class="tree-file">article.service.ts</span></div>
+                <div class="tree-item" style="margin-left: 4.5rem;"><span class="tree-file">post.service.ts</span></div>
+                <div class="tree-item" style="margin-left: 4.5rem;"><span class="tree-file">sheet.service.ts</span></div>
+                <div class="tree-item" style="margin-left: 4.5rem;"><span class="tree-file">submission.service.ts</span></div>
+
+                <div class="tree-item" style="margin-left: 1.5rem; margin-top: 0.5rem;"><span class="tree-folder">app/</span> <span class="tree-comment">← Next.js App Router</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-file">layout.tsx</span> <span class="tree-comment">Root with providers</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-folder">(auth)/</span> <span class="tree-comment">Login, signup routes</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-folder">(home)/</span> <span class="tree-comment">Protected routes</span></div>
+                <div class="tree-item" style="margin-left: 4.5rem;"><span class="tree-folder">explore/</span>, <span class="tree-folder">problems/</span>, <span class="tree-folder">articles/</span>, <span class="tree-folder">profile/</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-folder">challenges/[id]/</span> <span class="tree-comment">Problem solving interface</span></div>
+
+                <div class="tree-item" style="margin-left: 1.5rem; margin-top: 0.5rem;"><span class="tree-folder">components/</span> <span class="tree-comment">← React components</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-file">AuthGate.tsx</span> <span class="tree-comment">Route protection</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-folder">features/</span> <span class="tree-comment">Feature-specific</span></div>
+                <div class="tree-item" style="margin-left: 4.5rem;"><span class="tree-folder">article/</span>, <span class="tree-folder">challenge/</span>, <span class="tree-folder">explore/</span>, <span class="tree-folder">problems/</span>, <span class="tree-folder">profile/</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-folder">ui/</span> <span class="tree-comment">30+ UI components</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-folder">providers/</span> <span class="tree-comment">Theme, React Query</span></div>
+
+                <div class="tree-item" style="margin-left: 1.5rem; margin-top: 0.5rem;"><span class="tree-folder">store/</span> <span class="tree-comment">← Zustand stores</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-file">auth-store.ts</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-file">problem-store.ts</span></div>
+
+                <div class="tree-item" style="margin-left: 1.5rem; margin-top: 0.5rem;"><span class="tree-folder">hooks/</span> <span class="tree-comment">← Custom hooks</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-file">useAuth.ts</span>, <span class="tree-file">useProblem.ts</span></div>
+
+                <div class="tree-item" style="margin-left: 1.5rem; margin-top: 0.5rem;"><span class="tree-folder">types/</span> <span class="tree-comment">← TypeScript definitions</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-file">problem.ts</span>, <span class="tree-file">article.ts</span>, <span class="tree-file">post.ts</span>, <span class="tree-file">submission.ts</span></div>
+
+                <div class="tree-item" style="margin-left: 1.5rem; margin-top: 0.5rem;"><span class="tree-folder">utils/</span> <span class="tree-comment">← Utility functions</span></div>
+                <div class="tree-item" style="margin-left: 3rem;"><span class="tree-file">markdown.ts</span>, <span class="tree-file">testCase.utils.ts</span></div>
+            </div>
+        </section>
+
+        <!-- Major Features -->
+        <section class="section" id="features">
+            <h2 class="section-title">⭐ Major Features</h2>
+
+            <div class="feature">
+                <h4>💻 Code Challenge System</h4>
+                <p>Full-featured code editor with support for C++, Java, JavaScript, and Python. Features include:</p>
+                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                    <li>CodeMirror 6 integration with syntax highlighting</li>
+                    <li>Split-view layout (problem description + editor)</li>
+                    <li>Real-time test case evaluation</li>
+                    <li>Complexity analyzer with Recharts visualization</li>
+                    <li>AI hint chat integration</li>
+                    <li>Theme switching (VSCode Light, Monokai, Material Dark)</li>
+                </ul>
+            </div>
+
+            <div class="feature">
+                <h4>🏆 Problem Creation & Management</h4>
+                <p>Comprehensive workflow for creating coding problems:</p>
+                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                    <li>Problem metadata editor (title, description, difficulty)</li>
+                    <li>Multi-language code stub support</li>
+                    <li>Test case management (add, edit, delete)</li>
+                    <li>Persistent state using Zustand</li>
+                    <li>Version control & auto-save features</li>
+                </ul>
+            </div>
+
+            <div class="feature">
+                <h4>📚 Article Publishing</h4>
+                <p>Full markdown-based content platform with:</p>
+                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                    <li>GitHub Flavored Markdown support</li>
+                    <li>Syntax highlighting for code blocks</li>
+                    <li>Responsive image rendering</li>
+                    <li>Top authors leaderboard</li>
+                    <li>Slug-based routing</li>
+                </ul>
+            </div>
+
+            <div class="feature">
+                <h4>🌐 Social Feed (Explore)</h4>
+                <p>Community features for sharing and discovery:</p>
+                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                    <li>Post creation with title, content, images, tags</li>
+                    <li>File upload support</li>
+                    <li>Real-time feed via React Query</li>
+                    <li>User engagement and interactions</li>
+                </ul>
+            </div>
+
+            <div class="feature">
+                <h4>📋 Problem Collections (Sheets)</h4>
+                <p>Curated learning paths and problem organization:</p>
+                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                    <li>Create public/private collections</li>
+                    <li>Add problems to sheets</li>
+                    <li>Category-based organization</li>
+                    <li>Share curated learning resources</li>
+                </ul>
+            </div>
+
+            <div class="feature">
+                <h4>👤 User Authentication & Profiles</h4>
+                <p>Secure authentication system with user profiles:</p>
+                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                    <li>JWT-based token authentication</li>
+                    <li>Register & login flow</li>
+                    <li>User profile with bio, location, website</li>
+                    <li>Avatar support with ImageKit CDN</li>
+                    <li>Token persistence & refresh handling</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- API Endpoints -->
+        <section class="section" id="api">
+            <h2 class="section-title">🔌 API Layer & Services</h2>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('auth-api')">Auth Service</button>
+                <button class="tab" onclick="switchTab('problem-api')">Problem Service</button>
+                <button class="tab" onclick="switchTab('article-api')">Article Service</button>
+                <button class="tab" onclick="switchTab('other-api')">Other Services</button>
+            </div>
+
+            <!-- Auth Service -->
+            <div id="auth-api" class="tab-content active">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Authentication Service</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Endpoint</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>handleLogin()</code></td>
+                            <td>POST /auth/login</td>
+                            <td>User login with email & password → returns access_token</td>
+                        </tr>
+                        <tr>
+                            <td><code>registerUser()</code></td>
+                            <td>POST /auth/register</td>
+                            <td>Create new user account</td>
+                        </tr>
+                        <tr>
+                            <td><code>getProfile()</code></td>
+                            <td>GET /user/profile</td>
+                            <td>Fetch current user profile (requires token)</td>
+                        </tr>
+                        <tr>
+                            <td><code>updateProfile()</code></td>
+                            <td>PUT /user/profile</td>
+                            <td>Update user information</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Problem Service -->
+            <div id="problem-api" class="tab-content">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Problem Service (Most Comprehensive)</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Endpoint</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>getAllProblems()</code></td>
+                            <td>GET /problems</td>
+                            <td>Fetch all problems with pagination</td>
+                        </tr>
+                        <tr>
+                            <td><code>getProblemById()</code></td>
+                            <td>GET /problems/:id</td>
+                            <td>Full problem details (creator, stubs, test cases)</td>
+                        </tr>
+                        <tr>
+                            <td><code>createProblem()</code></td>
+                            <td>POST /problems</td>
+                            <td>Create new problem (requires auth)</td>
+                        </tr>
+                        <tr>
+                            <td><code>updateProblem()</code></td>
+                            <td>PUT /problems/:id</td>
+                            <td>Update problem metadata</td>
+                        </tr>
+                        <tr>
+                            <td><code>deleteProblem()</code></td>
+                            <td>DELETE /problems/:id</td>
+                            <td>Remove problem permanently</td>
+                        </tr>
+                        <tr>
+                            <td><code>getMyCreatedProblems()</code></td>
+                            <td>GET /user/problems</td>
+                            <td>Fetch user's created problems</td>
+                        </tr>
+                        <tr>
+                            <td><code>createCodeStub()</code></td>
+                            <td>POST /code-stubs</td>
+                            <td>Add code template for language</td>
+                        </tr>
+                        <tr>
+                            <td><code>updateCodeStub()</code></td>
+                            <td>PUT /code-stubs/:id</td>
+                            <td>Modify language code template</td>
+                        </tr>
+                        <tr>
+                            <td><code>createTestCase()</code></td>
+                            <td>POST /test-cases</td>
+                            <td>Add test case (input/output)</td>
+                        </tr>
+                        <tr>
+                            <td><code>updateTestCase()</code></td>
+                            <td>PUT /test-cases/:id</td>
+                            <td>Modify test case</td>
+                        </tr>
+                        <tr>
+                            <td><code>deleteTestCase()</code></td>
+                            <td>DELETE /test-cases/:id</td>
+                            <td>Remove test case</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Article Service -->
+            <div id="article-api" class="tab-content">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Article Service</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Endpoint</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>getAllArticles()</code></td>
+                            <td>GET /articles</td>
+                            <td>Fetch all published articles</td>
+                        </tr>
+                        <tr>
+                            <td><code>getArticleBySlug()</code></td>
+                            <td>GET /articles/:slug</td>
+                            <td>Get article details by slug</td>
+                        </tr>
+                        <tr>
+                            <td><code>createArticle()</code></td>
+                            <td>POST /articles</td>
+                            <td>Publish new article (requires auth)</td>
+                        </tr>
+                        <tr>
+                            <td><code>getTopAuthors()</code></td>
+                            <td>GET /authors/top</td>
+                            <td>Leaderboard of top authors</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Other Services -->
+            <div id="other-api" class="tab-content">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Post, Sheet & Submission Services</h3>
+                
+                <h4 style="margin-top: 1.5rem;">Post Service (Social)</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>getAllPosts()</code></td>
+                            <td>Fetch social feed with pagination</td>
+                        </tr>
+                        <tr>
+                            <td><code>createPost(token, data)</code></td>
+                            <td>Create new post with content & files</td>
+                        </tr>
+                        <tr>
+                            <td><code>uploadPostFiles(token, formData)</code></td>
+                            <td>Upload images/files for posts</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin-top: 1.5rem;">Sheet Service (Problem Collections)</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>getAllSheets()</code></td>
+                            <td>Fetch all problem collections</td>
+                        </tr>
+                        <tr>
+                            <td><code>getSheetProblems(sheetId)</code></td>
+                            <td>Get problems in a sheet</td>
+                        </tr>
+                        <tr>
+                            <td><code>createSheet(token, data)</code></td>
+                            <td>Create new problem collection</td>
+                        </tr>
+                        <tr>
+                            <td><code>addProblemToSheet(token, sheetId, problemId)</code></td>
+                            <td>Add problem to collection</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin-top: 1.5rem;">Submission Service (Code Execution)</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>submitCode(token, code, language, problemId)</code></td>
+                            <td>Submit code for evaluation</td>
+                        </tr>
+                        <tr>
+                            <td><code>getSubmissionResult(token, submissionId)</code></td>
+                            <td>Poll for execution results (status, output, time)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Authentication Flow -->
+        <section class="section">
+            <h2 class="section-title">🔐 Authentication Architecture</h2>
+            
+            <div class="diagram">
+                <div class="diagram-box">User enters credentials (email/password)</div>
+                <div class="diagram-arrow">↓</div>
+                <div class="diagram-box">handleLogin() API call</div>
+                <div class="diagram-arrow">↓</div>
+                <div class="diagram-box">Server returns JWT token</div>
+                <div class="diagram-arrow">↓</div>
+                <div class="diagram-box">Store token in Zustand auth-store</div>
+                <div class="diagram-arrow">↓</div>
+                <div class="diagram-box">AuthGate validates token on mount</div>
+                <div class="diagram-arrow">↓</div>
+                <div class="diagram-box">Fetch user profile & set authenticated state</div>
+                <div class="diagram-arrow">↓</div>
+                <div class="diagram-box">Token attached to all protected API calls</div>
+                <div class="diagram-arrow">↓</div>
+                <div class="diagram-box">Protected routes accessible to authenticated users</div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h3>Token Management</h3>
+                <ul>
+                    <li><strong>Storage:</strong> Zustand store with localStorage persistence</li>
+                    <li><strong>Persistence Key:</strong> "auth-store"</li>
+                    <li><strong>Header Format:</strong> Authorization: Bearer {token}</li>
+                    <li><strong>Validation:</strong> Happens in AuthGate component on app load</li>
+                    <li><strong>Hydration:</strong> Safe SSR handling with _hasHydrated flag</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Component Architecture -->
+        <section class="section">
+            <h2 class="section-title">🏗️ Component Architecture</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>UI Components</h3>
+                    <p>Reusable components from shadcn/ui & Radix UI:</p>
+                    <ul>
+                        <li>Button, Card, Dialog, Input</li>
+                        <li>Select, Textarea, Toggle</li>
+                        <li>Avatar, Badge, Skeleton</li>
+                        <li>Tooltip, Popover</li>
+                        <li>Resizable, ScrollArea</li>
+                        <li>Chart (Recharts)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Feature Components</h3>
+                    <p>Specialized components for major features:</p>
+                    <ul>
+                        <li><strong>Article:</strong> ArticleCard, MarkdownRenderer</li>
+                        <li><strong>Challenge:</strong> CodeEditor, EditorLayout</li>
+                        <li><strong>Problems:</strong> ProblemCard, TestCaseCards</li>
+                        <li><strong>Explore:</strong> PostFeed, PostCard</li>
+                        <li><strong>Profile:</strong> ProfileCard, UserStats</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Providers</h3>
+                    <p>App-level providers for state & theming:</p>
+                    <ul>
+                        <li>ThemeProvider (dark/light mode)</li>
+                        <li>ReactQueryProvider (data fetching)</li>
+                        <li>TooltipProvider (Radix)</li>
+                        <li>AuthGate (route protection)</li>
+                        <li>Sonner (toast notifications)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Custom Hooks</h3>
+                    <p>Reusable React hooks for common tasks:</p>
+                    <ul>
+                        <li>useAuth() - Auth operations</li>
+                        <li>useProblem() - Problem state</li>
+                        <li>React Query hooks (useQuery, useMutation)</li>
+                        <li>useLocalStorage (from zustand)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature" style="margin-top: 2rem;">
+                <h4>Component Tree Flow</h4>
+                <div class="code-block"><code>
+Root Layout (Providers)
+  ├─ ThemeProvider
+  ├─ AuthGate
+  │   ├─ TooltipProvider
+  │   └─ ReactQueryProvider
+  │       ├─ Auth Routes (login, signup)
+  │       ├─ Protected Routes
+  │       │   ├─ Navbar + Sidebar
+  │       │   ├─ Explore (PostFeed)
+  │       │   ├─ Problems (ProblemList)
+  │       │   ├─ Articles (ArticleList)
+  │       │   └─ Profile (UserProfile)
+  │       └─ Challenges/:id (EditorLayout)
+                </code></div>
+            </div>
+        </section>
+
+        <!-- State Management -->
+        <section class="section">
+            <h2 class="section-title">📦 State Management</h2>
+            
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>Zustand Stores</h3>
+                    <p><strong>auth-store.ts</strong></p>
+                    <ul>
+                        <li>isAuthenticated: boolean</li>
+                        <li>token: string | null</li>
+                        <li>user: IUser | null</li>
+                        <li>_hasHydrated: boolean</li>
+                        <li style="margin-top: 0.5rem;"><strong>Persisted:</strong> localStorage</li>
+                    </ul>
+
+                    <p style="margin-top: 1.5rem;"><strong>problem-store.ts</strong></p>
+                    <ul>
+                        <li>mode: "create" | "edit"</li>
+                        <li>currentProblemInEditor: IProblemData | null</li>
+                        <li>codeStubsState: Record&lt;language, code&gt;</li>
+                        <li>testCasesState: { id, input, output }[]</li>
+                        <li style="margin-top: 0.5rem;"><strong>Persisted:</strong> localStorage</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>React Query (Server State)</h3>
+                    <p>Manages server-side data with automatic caching:</p>
+                    <ul>
+                        <li><code>useQuery()</code> - Fetch & cache data</li>
+                        <li><code>useMutation()</code> - Create/update/delete</li>
+                        <li><code>QueryClient</code> - Centralized cache</li>
+                        <li>Auto-refetching on focus</li>
+                        <li>Request deduplication</li>
+                        <li>Error & loading states</li>
+                    </ul>
+
+                    <p style="margin-top: 1.5rem;"><strong>Example:</strong></p>
+                    <div class="code-block"><code>const { data, isLoading } = useQuery({
+  queryKey: ['problems'],
+  queryFn: getAllProblems
+})</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Models -->
+        <section class="section">
+            <h2 class="section-title">📋 Core Data Models</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>Problem</h3>
+                    <div class="code-block"><code>TProblemTotalData {
+  id: string
+  title: string
+  description: string
+  difficulty: "easy" | "medium" | "hard"
+  creator: TCreator
+  code_stubs: TCodeStub[]
+  test_cases: TTestCase[]
+  created_at: string
+  updated_at: string
+}</code></div>
+                </div>
+
+                <div class="card">
+                    <h3>User</h3>
+                    <div class="code-block"><code>IUser {
+  id: string
+  name: string
+  email: string
+  avatar_url: string | null
+  bio: string | null
+  location: string | null
+  website_url: string | null
+  email_verified: boolean
+  created_at: string
+  updated_at: string
+}</code></div>
+                </div>
+
+                <div class="card">
+                    <h3>Code Stub</h3>
+                    <div class="code-block"><code>TCodeStub {
+  id: string
+  problem_id: string
+  language: string
+  code: string
+  created_at: string
+}</code></div>
+                </div>
+
+                <div class="card">
+                    <h3>Test Case</h3>
+                    <div class="code-block"><code>TTestCase {
+  id: string
+  problem_id: string
+  input: string
+  output: string
+  created_at: string
+}</code></div>
+                </div>
+
+                <div class="card">
+                    <h3>Submission</h3>
+                    <div class="code-block"><code>TSubmissionResponseType {
+  id: string
+  problem_id: string
+  user_id: string
+  code: string
+  language: string
+  status: string
+  result: string
+  created_at: string
+}</code></div>
+                </div>
+
+                <div class="card">
+                    <h3>Article</h3>
+                    <div class="code-block"><code>TArticle {
+  id: string
+  title: string
+  slug: string
+  content: string (markdown)
+  author: TAuthor
+  tags: string[]
+  created_at: string
+}</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Build & Deploy -->
+        <section class="section">
+            <h2 class="section-title">🚀 Build & Development</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>Available Scripts</h3>
+                    <div class="code-block"><code>npm run dev       # Start dev server
+npm run build     # Production build
+npm run start     # Run production server
+npm run lint      # Check code quality
+npm run format    # Auto-format code
+npm run lint:fix  # Fix linting issues</code></div>
+                </div>
+
+                <div class="card">
+                    <h3>Quality Assurance</h3>
+                    <ul>
+                        <li><strong>Linting:</strong> Biome (2.2.0)</li>
+                        <li><strong>Line Width:</strong> 80 characters</li>
+                        <li><strong>Indentation:</strong> 2 spaces</li>
+                        <li><strong>Pre-commit:</strong> Husky hooks</li>
+                        <li><strong>TypeScript:</strong> Strict mode</li>
+                        <li><strong>Next.js Config:</strong> React Compiler enabled</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Code Splitting</h3>
+                    <ul>
+                        <li>Next.js App Router automatic</li>
+                        <li>Dynamic imports for heavy components</li>
+                        <li>CodeMirror lazy loading</li>
+                        <li>Image optimization via ImageKit CDN</li>
+                        <li>Tailwind CSS JIT compilation</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Deployment</h3>
+                    <ul>
+                        <li><strong>Recommended:</strong> Vercel (optimized for Next.js)</li>
+                        <li><strong>Alternative:</strong> Node.js servers</li>
+                        <li><strong>Database:</strong> Backend concern (not in frontend)</li>
+                        <li><strong>CDN:</strong> ImageKit for images</li>
+                        <li><strong>Environment:</strong> NEXT_PUBLIC_API_BASE_URL</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="section">
+            <h2 class="section-title">✨ Quick Summary</h2>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Technology</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Framework</td>
+                        <td>Next.js 16 + React 19</td>
+                        <td>App Router, TypeScript strict mode</td>
+                    </tr>
+                    <tr>
+                        <td>State Management</td>
+                        <td>Zustand + React Query</td>
+                        <td>Client & server state</td>
+                    </tr>
+                    <tr>
+                        <td>Styling</td>
+                        <td>Tailwind CSS 4 + shadcn/ui</td>
+                        <td>30+ UI components</td>
+                    </tr>
+                    <tr>
+                        <td>Code Editor</td>
+                        <td>CodeMirror 6</td>
+                        <td>4 languages support</td>
+                    </tr>
+                    <tr>
+                        <td>Authentication</td>
+                        <td>JWT Token-based</td>
+                        <td>AuthGate component protection</td>
+                    </tr>
+                    <tr>
+                        <td>API Client</td>
+                        <td>Axios + React Query</td>
+                        <td>REST endpoints</td>
+                    </tr>
+                    <tr>
+                        <td>Type Safety</td>
+                        <td>TypeScript</td>
+                        <td>Strict mode enabled</td>
+                    </tr>
+                    <tr>
+                        <td>Code Quality</td>
+                        <td>Biome + Husky</td>
+                        <td>Pre-commit linting</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>v0.1.0</td>
+                        <td>Active development</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Key Insights -->
+        <section class="section">
+            <h2 class="section-title">💡 Key Architectural Insights</h2>
+
+            <div class="feature">
+                <h4>1. Feature-Based Organization</h4>
+                <p>Components are organized by feature (article, challenge, problems, etc.) making it easy to maintain and extend individual features independently.</p>
+            </div>
+
+            <div class="feature">
+                <h4>2. Separation of Concerns</h4>
+                <p>Clear separation between API layer, state management, components, and utilities. Services handle all backend communication, stores manage global state, and components focus on rendering.</p>
+            </div>
+
+            <div class="feature">
+                <h4>3. Type-Safe Development</h4>
+                <p>Comprehensive TypeScript definitions for all API responses and data models. Strict mode enabled for maximum type safety and IDE support.</p>
+            </div>
+
+            <div class="feature">
+                <h4>4. Authentication Flow</h4>
+                <p>Token-based JWT authentication with automatic persistence, validation on mount, and automatic injection into all API calls. AuthGate provides route protection.</p>
+            </div>
+
+            <div class="feature">
+                <h4>5. Performance Optimizations</h4>
+                <p>React Compiler for auto-memoization, React Query for request deduplication and caching, code splitting via App Router, and image optimization via CDN.</p>
+            </div>
+
+            <div class="feature">
+                <h4>6. State Management Strategy</h4>
+                <p>Hybrid approach: Zustand for persistent client state (auth, problem editor), React Query for server state. Each serves its purpose effectively.</p>
+            </div>
+
+            <div class="feature">
+                <h4>7. Rich Code Editor Experience</h4>
+                <p>Full-featured CodeMirror integration with syntax highlighting for 4 languages, theme switching, and integration with test case evaluation system.</p>
+            </div>
+
+            <div class="feature">
+                <h4>8. Responsive & Accessible Design</h4>
+                <p>Mobile-responsive layouts, dark/light mode support, Radix UI for accessibility, and comprehensive component library for consistent UX.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>CodeForge Codebase Documentation | Generated May 2026 | Built with Next.js + React + TypeScript</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">This documentation provides a comprehensive overview of the entire codebase structure, architecture, and technologies used.</p>
+    </footer>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remove active from all buttons
+            const buttons = document.querySelectorAll('.tab');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Mark button as active
+            event.target.classList.add('active');
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
