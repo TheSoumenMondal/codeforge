@@ -21,7 +21,8 @@ const Page = () => {
     selectedDifficulty === "all"
       ? (data ?? [])
       : (data ?? []).filter(
-          (problem) => problem.difficulty === selectedDifficulty,
+          (problem: TProblemDataType) =>
+            problem.difficulty === selectedDifficulty,
         );
 
   if (isLoading) {
