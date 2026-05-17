@@ -1,5 +1,6 @@
 "use client";
 
+import { FlowerIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,13 @@ const Navbar = () => {
 
   return (
     <div className="w-full h-14 flex items-center justify-between px-4">
-      <div className="font-serif">codeforge</div>
+      <div className="font-serif flex items-center gap-1 text-lg">
+        <FlowerIcon
+          weight="duotone"
+          size={22}
+        />
+        codeforge
+      </div>
       <div className="flex gap-2 items-center">
         <AiHintChat />
         <ComplexityAnalyzer />

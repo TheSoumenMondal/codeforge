@@ -53,6 +53,13 @@ const Navbar = () => {
   } else if (pathname === "/problems/create") {
     leftNav = <CreateProblemNavbarLeft />;
     rightNav = <CreateProblemNavbarRight />;
+  } else if (pathname.startsWith("/profile")) {
+    leftNav = (
+      <p className="text-xl font-medium h-full flex items-center pl-4 font-instrumental-serif tracking-wide">
+        Profile
+      </p>
+    );
+    rightNav = null;
   }
 
   return (

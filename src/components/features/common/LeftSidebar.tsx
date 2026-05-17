@@ -4,6 +4,7 @@ import {
   BooksIcon,
   BrainIcon,
   CompassIcon,
+  FlowerIcon,
   GearIcon,
 } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
@@ -81,7 +82,13 @@ const LeftSidebar = () => {
   return (
     <div className="w-full h-screen flex flex-col justify-between">
       <div className="w-full flex flex-col">
-        <div className="w-full h-15 flex items-center">codeforge_logo</div>
+        <div className="w-full h-15 flex items-center mt-3">
+          <FlowerIcon
+            weight="duotone"
+            size={22}
+          />
+          <span className="text-lg font-bold ml-2">codeforge</span>
+        </div>
         <div className="w-full h-full flex flex-col mt-10 gap-4 font-alef">
           {sidebarItems
             .filter((item) =>
