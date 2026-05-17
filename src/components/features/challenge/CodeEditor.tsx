@@ -48,6 +48,7 @@ import {
 } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import { useChallengeSubmissionCodeStore } from "@/store/challenge-submission-code-store";
 import type { TProblemTotalData } from "@/types/problem";
 import type { TSubmissionResponseType } from "@/types/submission";
 
@@ -126,6 +127,12 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { resolvedTheme } = useTheme();
   const { isAuthenticated, token } = useAuth();
+  const setActiveLanguage = useChallengeSubmissionCodeStore(
+    (store) => store.setActiveLanguage,
+  );
+  const setCodeForLanguage = useChallengeSubmissionCodeStore(
+    (store) => store.setCodeForLanguage,
+  );
 
   const defaultLang = (data.code_stubs?.[0]?.language ??
     "cpp") as TLanguageValue;
@@ -137,14 +144,24 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    const persistedCode =
+      useChallengeSubmissionCodeStore.getState().codeByLanguage[language];
+
     let initialCode = currentCodeRefs.current[language];
+
+    if (persistedCode !== undefined) {
+      initialCode = persistedCode;
+    }
 
     if (initialCode === undefined) {
       initialCode =
         data.code_stubs?.find((stub) => stub.language === language)
           ?.user_code ?? "";
-      currentCodeRefs.current[language] = initialCode;
     }
+
+    currentCodeRefs.current[language] = initialCode;
+    setActiveLanguage(language);
+    setCodeForLanguage(language, initialCode);
 
     const langExtension =
       language === "cpp"
@@ -195,7 +212,9 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
         }),
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
-            currentCodeRefs.current[language] = update.state.doc.toString();
+            const nextCode = update.state.doc.toString();
+            currentCodeRefs.current[language] = nextCode;
+            setCodeForLanguage(language, nextCode);
           }
         }),
       ],
@@ -204,7 +223,7 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
     const view = new EditorView({ state, parent: containerRef.current });
 
     return () => view.destroy();
-  }, [data, language, resolvedTheme]);
+  }, [data, language, resolvedTheme, setActiveLanguage, setCodeForLanguage]);
 
   const { mutate: handleSubmitCode, isPending: isSubmitting } = useMutation<
     TSubmissionCreateResponse,
@@ -345,6 +364,7 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
               value={language}
               onValueChange={(val) => {
                 if (val) setLanguage(val as TLanguageValue);
+                if (val) setActiveLanguage(val);
               }}
             >
               <SelectTrigger
