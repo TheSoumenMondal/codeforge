@@ -2,6 +2,7 @@
 
 import { CircleNotchIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import { getAllProblems } from "@/api/services/problem.service";
 import ProblemCard from "@/components/features/problems/ProblemCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,10 +10,19 @@ import type { TProblemDataType } from "@/types/problem";
 import { mdToPlainText } from "@/utils/markdown";
 
 const Page = () => {
+  const searchParams = useSearchParams();
   const { data, error, isLoading } = useQuery({
     queryKey: ["problems"],
     queryFn: getAllProblems,
   });
+
+  const selectedDifficulty = searchParams.get("difficulty") ?? "all";
+  const filteredProblems =
+    selectedDifficulty === "all"
+      ? (data ?? [])
+      : (data ?? []).filter(
+          (problem) => problem.difficulty === selectedDifficulty,
+        );
 
   if (isLoading) {
     return (
@@ -33,7 +43,7 @@ const Page = () => {
   return (
     <ScrollArea className="h-[calc(100vh-57px)]">
       <div className="w-full p-4 gap-4 flex flex-col">
-        {data.map((problem: TProblemDataType) => (
+        {filteredProblems.map((problem: TProblemDataType) => (
           <ProblemCard
             id={problem.id}
             title={problem.title}

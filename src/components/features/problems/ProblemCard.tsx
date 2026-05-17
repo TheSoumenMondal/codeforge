@@ -1,14 +1,8 @@
-import {
-  ImageSquareIcon,
-  PencilLineIcon,
-  PlusSquareIcon,
-  ShareNetworkIcon,
-} from "@phosphor-icons/react";
+import { PencilLineIcon } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import type { TProblemDataType } from "@/types/problem";
 import { mdToPlainText } from "@/utils/markdown";
@@ -59,38 +53,6 @@ const ProblemCard = (questionData: TProblemDataType) => {
           <Badge className={getDifficultyBadgeClass(questionData.difficulty)}>
             {questionData.difficulty}
           </Badge>
-          <ButtonGroup>
-            <Button
-              animation="none"
-              size="sm"
-              variant="warning"
-            >
-              <ShareNetworkIcon
-                size={32}
-                weight="duotone"
-              />{" "}
-            </Button>
-            <Button
-              animation="none"
-              size="sm"
-              variant="warning"
-            >
-              <ImageSquareIcon
-                size={32}
-                weight="duotone"
-              />{" "}
-            </Button>
-            <Button
-              animation="none"
-              variant="warning"
-              size="sm"
-            >
-              <PlusSquareIcon
-                size={32}
-                weight="duotone"
-              />{" "}
-            </Button>
-          </ButtonGroup>
           <Button
             onClick={handleGoToProblem}
             animation="none"
