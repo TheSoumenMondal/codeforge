@@ -3,10 +3,8 @@
 import {
   CircleNotchIcon,
   ImageIcon,
-  QueueIcon,
   SmileyWinkIcon,
   UserCircleIcon,
-  VideoCameraIcon,
 } from "@phosphor-icons/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
@@ -166,7 +164,7 @@ const CreatePostCard = () => {
       onOpenChange={setIsOpen}
     >
       <DialogTrigger className="w-full h-24 bg-card">
-        <div className="w-full flex flex-col h-full">
+        <div className="w-full flex flex-col h-full border-b bg-accent">
           <div className="h-4/7 flex items-center px-4 gap-3">
             <UserCircleIcon size={34} />
             <p className="text-[13px]">Have you appeared for any interview ?</p>
@@ -174,14 +172,6 @@ const CreatePostCard = () => {
           <div className="h-3/7 flex items-center justify-between px-4 pb-1">
             <div className="flex items-center justify-center gap-3">
               <ImageIcon
-                size={24}
-                weight="duotone"
-              />
-              <VideoCameraIcon
-                size={24}
-                weight="duotone"
-              />
-              <QueueIcon
                 size={24}
                 weight="duotone"
               />
@@ -258,16 +248,7 @@ const CreatePostCard = () => {
                 size={24}
                 weight="duotone"
               />
-              <VideoCameraIcon
-                className="cursor-pointer"
-                size={24}
-                weight="duotone"
-              />
-              <QueueIcon
-                className="cursor-pointer"
-                size={24}
-                weight="duotone"
-              />
+
               <hr className="rotate-90 bg-accent w-5" />
               <SmileyWinkIcon
                 className="cursor-pointer"
