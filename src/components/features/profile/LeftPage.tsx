@@ -14,7 +14,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import { toast } from "sonner";
 import { updateProfile, uploadAvatar } from "@/api/services/auth.service";
-import { FieldInfo } from "@/components/common/FieldInfo";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -177,7 +176,6 @@ const LeftPage = () => {
                       />
                     </InputGroupAddon>
                   </InputGroup>
-                  <FieldInfo field={field} />
                 </div>
               )}
             </form.Field>
@@ -201,7 +199,6 @@ const LeftPage = () => {
                       />
                     </InputGroupAddon>
                   </InputGroup>
-                  <FieldInfo field={field} />
                 </div>
               )}
             </form.Field>
@@ -227,7 +224,6 @@ const LeftPage = () => {
                     />
                   </InputGroupAddon>
                 </InputGroup>
-                <FieldInfo field={field} />
               </div>
             )}
           </form.Field>
@@ -252,7 +248,6 @@ const LeftPage = () => {
                     />
                   </InputGroupAddon>
                 </InputGroup>
-                <FieldInfo field={field} />
               </div>
             )}
           </form.Field>
@@ -277,7 +272,6 @@ const LeftPage = () => {
                     />
                   </InputGroupAddon>
                 </InputGroup>
-                <FieldInfo field={field} />
               </div>
             )}
           </form.Field>

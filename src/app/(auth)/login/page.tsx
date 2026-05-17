@@ -1,10 +1,15 @@
 "use client";
 
-import { GithubLogoIcon, GoogleLogoIcon } from "@phosphor-icons/react";
+import {
+  EyeClosedIcon,
+  EyeIcon,
+  GithubLogoIcon,
+  GoogleLogoIcon,
+} from "@phosphor-icons/react";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
+import React from "react";
 import { toast } from "sonner";
-import { FieldInfo } from "@/components/common/FieldInfo";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,6 +19,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useAuth";
@@ -21,6 +31,8 @@ import { useAuth } from "@/hooks/useAuth";
 const LoginPage = () => {
   const router = useRouter();
   const { login } = useAuth();
+
+  const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
   const form = useForm({
     defaultValues: {
@@ -46,8 +58,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center px-4">
-      <Card className="w-full max-w-md px-4 py-6">
+    <div className="w-full flex items-center justify-center md:px-4">
+      <Card className="w-full max-w-md px-4 py-6 ring-0 border-0">
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -64,7 +76,7 @@ const LoginPage = () => {
             </CardDescription>
           </CardHeader>
 
-          <CardDescription className="px-4 flex flex-col gap-4">
+          <CardDescription className="px-4 flex flex-col gap-4 mt-4">
             <Button
               type="button"
               size="lg"
@@ -112,8 +124,15 @@ const LoginPage = () => {
                   <>
                     <Label htmlFor={field.name}>Email</Label>
                     <Input
+                      type="email"
                       id={field.name}
                       name={field.name}
+                      aria-invalid={
+                        !field.state.meta.isValid ||
+                        field.state.meta.isValidating
+                          ? true
+                          : undefined
+                      }
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(event) =>
@@ -121,7 +140,6 @@ const LoginPage = () => {
                       }
                       placeholder="you@example.com"
                     />
-                    <FieldInfo field={field} />
                   </>
                 )}
               </form.Field>
@@ -142,18 +160,46 @@ const LoginPage = () => {
                 {(field) => (
                   <>
                     <Label htmlFor={field.name}>Password</Label>
-                    <Input
+                    <InputGroup
                       id={field.name}
                       name={field.name}
-                      type="password"
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(event) =>
-                        field.handleChange(event.target.value)
+                      aria-invalid={
+                        !field.state.meta.isValid ||
+                        field.state.meta.isValidating
+                          ? true
+                          : undefined
                       }
-                      placeholder="••••••••"
-                    />
-                    <FieldInfo field={field} />
+                      onBlur={field.handleBlur}
+                    >
+                      <InputGroupInput
+                        placeholder="********"
+                        type={showPassword ? "text" : "password"}
+                        value={field.state.value}
+                        onChange={(event) =>
+                          field.handleChange(event.target.value)
+                        }
+                      />
+                      <InputGroupAddon
+                        align="inline-end"
+                        className="items-center"
+                      >
+                        {showPassword ? (
+                          <EyeIcon
+                            weight="duotone"
+                            size={18}
+                            className="text-muted-foreground cursor-pointer"
+                            onClick={() => setShowPassword(false)}
+                          />
+                        ) : (
+                          <EyeClosedIcon
+                            weight="duotone"
+                            size={18}
+                            className="text-muted-foreground cursor-pointer"
+                            onClick={() => setShowPassword(true)}
+                          />
+                        )}
+                      </InputGroupAddon>
+                    </InputGroup>
                   </>
                 )}
               </form.Field>

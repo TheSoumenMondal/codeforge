@@ -16,9 +16,8 @@ const InputGroup = React.forwardRef<
       ref={ref}
       data-slot="input-group"
       className={cn(
-        "group/input-group relative flex h-8 w-full min-w-0 items-center rounded-lg border border-input transition-colors outline-none",
+        "group/input-group relative flex h-8 w-full min-w-0 items-center rounded-lg border border-input transition-colors outline-none aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20",
         "has-disabled:bg-input/50 has-disabled:opacity-50",
-        "has-[[data-slot][aria-invalid=true]]:border-destructive",
         "has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col",
         "has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col",
         "has-[>textarea]:h-auto",
@@ -159,7 +158,7 @@ const InputGroupInput = React.forwardRef<
       ref={ref}
       data-slot="input-group-control"
       className={cn(
-        "flex-1 rounded-none border-0 bg-transparent shadow-none disabled:bg-transparent aria-invalid:border-destructive dark:bg-transparent dark:disabled:bg-transparent",
+        "flex-1 rounded-none border-0 bg-transparent shadow-none disabled:bg-transparent dark:bg-transparent dark:disabled:bg-transparent",
         className,
       )}
       {...props}
@@ -177,7 +176,7 @@ const InputGroupTextarea = React.forwardRef<
       ref={ref}
       data-slot="input-group-control"
       className={cn(
-        "flex-1 resize-none rounded-none border-0 bg-transparent py-2 shadow-none disabled:bg-transparent aria-invalid:border-destructive dark:bg-transparent dark:disabled:bg-transparent",
+        "flex-1 resize-none rounded-none border-0 bg-transparent py-2 shadow-none disabled:bg-transparent dark:bg-transparent dark:disabled:bg-transparent",
         className,
       )}
       {...props}
