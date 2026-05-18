@@ -39,15 +39,20 @@ const ProblemCard = (questionData: TProblemDataType) => {
         background
         className="flex justify-between items-center gap-2 flex-wrap mb-0"
       >
-        <Avatar className="size-6">
-          <AvatarImage
-            src={
-              questionData.creator.avatar_url?.trim() ||
-              "/images/avatar/default_dp.png"
-            }
-          />
-          <AvatarFallback>{questionData.creator.name.charAt(0)}</AvatarFallback>
-        </Avatar>
+        <div className="flex gap-2 items-end">
+          <Avatar className="size-6">
+            <AvatarImage
+              src={
+                questionData.creator.avatar_url?.trim() ||
+                "/images/avatar/default_dp.png"
+              }
+            />
+            <AvatarFallback>
+              {questionData.creator.name.charAt(0)}
+            </AvatarFallback>
+          </Avatar>
+          <span className="font-serif">{questionData.creator.name}</span>
+        </div>
 
         <div className="flex gap-2 items-center">
           <Badge className={getDifficultyBadgeClass(questionData.difficulty)}>
