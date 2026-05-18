@@ -234,7 +234,6 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
       submitCode(token as string, code, language, data.id),
     onSuccess: (response) => {
       setSubmissionId(response.id);
-      toast.success("Code submitted successfully!");
     },
     onError: (error) => {
       toast.error(error.message || "Failed to submit code");
