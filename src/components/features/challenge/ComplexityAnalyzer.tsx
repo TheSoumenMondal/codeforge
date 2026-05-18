@@ -124,7 +124,12 @@ const ComplexityAnalyzer = () => {
   const [open, setOpen] = useState<boolean>(false);
 
   const currentEditorCode = useChallengeSubmissionCodeStore(
-    (store) => store.codeByLanguage[store.activeLanguage] ?? "",
+    (store) =>
+      store.codeByProblemAndLanguage[
+        `${store.currentProblemId ?? ""}:${store.activeLanguage}`
+      ] ??
+      store.codeByLanguage[store.activeLanguage] ??
+      "",
   );
 
   const [timeComplexity, setTimeComplexity] =

@@ -130,6 +130,9 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
   const setActiveLanguage = useChallengeSubmissionCodeStore(
     (store) => store.setActiveLanguage,
   );
+  const setCurrentProblemId = useChallengeSubmissionCodeStore(
+    (store) => store.setCurrentProblemId,
+  );
   const setCodeForLanguage = useChallengeSubmissionCodeStore(
     (store) => store.setCodeForLanguage,
   );
@@ -139,15 +142,18 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
   const [language, setLanguage] = useState<TLanguageValue>(defaultLang);
   const [submissionId, setSubmissionId] = useState<string | null>(null);
 
-  const currentCodeRefs = useRef<Record<string, string>>({});
+  const currentCodeRefs = useRef<Record<string, Record<string, string>>>({});
+  const problemLanguageKey = `${data.id}:${language}`;
 
   useEffect(() => {
     if (!containerRef.current) return;
 
     const persistedCode =
-      useChallengeSubmissionCodeStore.getState().codeByLanguage[language];
+      useChallengeSubmissionCodeStore.getState().codeByProblemAndLanguage[
+        problemLanguageKey
+      ] ?? useChallengeSubmissionCodeStore.getState().codeByLanguage[language];
 
-    let initialCode = currentCodeRefs.current[language];
+    let initialCode = currentCodeRefs.current[data.id]?.[language];
 
     if (persistedCode !== undefined) {
       initialCode = persistedCode;
@@ -159,9 +165,11 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
           ?.user_code ?? "";
     }
 
-    currentCodeRefs.current[language] = initialCode;
+    currentCodeRefs.current[data.id] ??= {};
+    currentCodeRefs.current[data.id][language] = initialCode;
+    setCurrentProblemId(data.id);
     setActiveLanguage(language);
-    setCodeForLanguage(language, initialCode);
+    setCodeForLanguage(data.id, language, initialCode);
 
     const langExtension =
       language === "cpp"
@@ -213,8 +221,9 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
             const nextCode = update.state.doc.toString();
-            currentCodeRefs.current[language] = nextCode;
-            setCodeForLanguage(language, nextCode);
+            currentCodeRefs.current[data.id] ??= {};
+            currentCodeRefs.current[data.id][language] = nextCode;
+            setCodeForLanguage(data.id, language, nextCode);
           }
         }),
       ],
@@ -223,7 +232,15 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
     const view = new EditorView({ state, parent: containerRef.current });
 
     return () => view.destroy();
-  }, [data, language, resolvedTheme, setActiveLanguage, setCodeForLanguage]);
+  }, [
+    data,
+    language,
+    problemLanguageKey,
+    resolvedTheme,
+    setActiveLanguage,
+    setCodeForLanguage,
+    setCurrentProblemId,
+  ]);
 
   const { mutate: handleSubmitCode, isPending: isSubmitting } = useMutation<
     TSubmissionCreateResponse,
@@ -419,7 +436,7 @@ export function CodeEditor({ data }: { data: TProblemTotalData }) {
               type="button"
               onClick={() => {
                 handleSubmitCode({
-                  code: currentCodeRefs.current[language] ?? "",
+                  code: currentCodeRefs.current[data.id]?.[language] ?? "",
                   language,
                 });
               }}
